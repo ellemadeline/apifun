@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+	<title>Inspirational Quote</title>
+	<meta charset="utf-8"/>
+	<script>
+		function getQuote() {
+			request = new XMLHttpRequest();
+
+			request.open("GET", "https://api.goprogram.ai/inspiration", true)
+
+
+			request.onreadystatechange = function() {
+
+ 
+				if (request.readyState == 4 && request.status == 200) {
+
+					result = request.responseText;
+					quoteData = JSON.parse(result);
+					
+					document.getElementById("data1").innerHTML = quoteData["quote"];
+					
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data1").innerHTML = "Something is wrong! ";
+
+				}
+
+				else if (request.readyState == 3) {
+
+					document.getElementById("data1").innerHTML = "Too soon!  Try again";
+
+				}
+
+			}
+			request.send();
+
+			res = fetch("https://api.goprogram.ai/inspiration")
+                .then (res => res.text())
+                .then (data => {
+                    data =JSON.parse(data);
+                    data = data.quote;
+					document.getElementById("data2").innerHTML = data;
+                }
+                )
+                .catch (error => console.log(error))
+		}
+
+	</script>
+	<style>
+
+		h1{
+			text-align: center;
+		}
+		body{
+			background-color: lightblue;
+		}
+
+
+	</style>
+</head>
+<body onload= "getQuote()">
+	<h1>Inspirational Quotes API</h1>
+	<h2>Quote from API Call 1 (AJAX)</h2> 
+    <div id = "data1" >
+        </div>
+		<h2>Quote from API Call 2 (FETCH)</h2> 
+		<div id = "data2" >
+        </div>
+	<div id = "Content">
+		<h2>API Information </h2>
+			<p> This API generates a random quote to inspire people. It returns the quote in JSON format but only returns one, so the only options are quote and author. I just got the quote that appeared in the JSON. 
+				This API could be helpful on a meditation website or on a phone widget if people like reading quotes. I found the API on https://free-apis.github.io/#/browse.
+			</p>
+	</div>
+</body>
+</html>
